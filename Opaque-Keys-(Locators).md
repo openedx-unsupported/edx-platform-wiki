@@ -123,7 +123,7 @@ A `Location` is both a `DefinitionKey` and a `UsageKey`. `Location`s identify a 
 
 An `AssetKey` supports static assets such as pictures, pdfs, and mp3s uploaded by course authors through Studio.
 
-The classes `SlashSeparatedCourseKey` and `Location` both have the `to_deprecated_string` method and `from_deprecated_string` classmethod. This method enables users to serialize and deserialize the CourseKey in the old-style "org/course/run" format and the `Location` in the `i4x://org/course/category/id` format.
+The classes `SlashSeparatedCourseKey` and `Location` both have the `str_type` method and `from_string` classmethod. These methods enable users to serialize and deserialize the CourseKey in the old-style "org/course/run" format and the `Location` in the `i4x://org/course/category/id` format.
 
 <a name="utilizing"/>
 ### Utilizing Keys
