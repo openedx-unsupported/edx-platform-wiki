@@ -20,7 +20,8 @@ For other guidelines on logo usage, see the [Open edX Trademark Guidelines](http
 ```
 
 ## White for Dark Backgrounds
-![white logo for dark backgrounds](https://files.edx.org/openedx-logos/open-edx-logo-tag-dark.png)
+
+![demo of white logo on darkish background](https://open.edx.org/wp-content/uploads/2020/12/white-on-gray.png)
 
 <https://files.edx.org/openedx-logos/open-edx-logo-tag-dark.png>
 
