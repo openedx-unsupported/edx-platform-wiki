@@ -11,7 +11,6 @@ This document discusses the design of the Opaque Keys system, as well as the pro
   * [Key Relationships](#relationships)
   * [URLs](#urls)
 
-<a name="basics"/>
 ## TLDR Basics
 
 ### Imports
@@ -61,15 +60,11 @@ print "Course: {}".format(course_key)
 print "Usage: {}".format(usage_key)
 ```
 
-<a name="background"/>
-
 ## Background
 
 Our codebase is in the midst of a database rearchitecture. Our production database currently is referred to as "old Mongo", in preparation for the move to the new architecture known as ["split Mongo"](https://github.com/edx/edx-platform/wiki/Split:-the-versioning,-structure-saving-DAO), but currently all of our production data is stored in old Mongo. The old Mongo database uses keys that contain structured data. These Mongo keys are literally JSON objects, with key-value pairs for `tag`, `org`, `course`, `category`, `name`, and `revision`. XModule provides the `Location` class as an abstraction layer over these Mongo keys. `Location` had a serious deficiency for uniquely identifying xblocks: it does not fully specify the old-style org/course/run identifier (it leaves out the 'run'); thus, old mongo can not uniquely identify xblocks in fully qualified courses. 
 
 Split Mongo uses the full org + course + run but also adds branch and snapshot version (like a git commit hash). The split Mongo project provides the `Locator` class as an abstraction layer over these.
-
-<a name="problem"/>
 
 ## The Problem
 
@@ -81,7 +76,6 @@ One example of this is found in the way that LMS structures its URLs. URL constr
 
 This key introspection also means that different parts of our application can only accept `Location`s or only accept `Locator`s, which is odd since both types of keys refer to the same data. It means we must spend time converting from one key abstraction to another, maintaining a `loc_mapper` data structure for the sole purpose of remembering which `Location` refers to which `Locator` and vice versa -- which means lots of extra database queries and performance penalties. It also makes reasoning about how we store our data much more difficult.
 
-<a name="solution"/>
 
 ## The Solution
 
@@ -91,7 +85,6 @@ The other key benefit of this solution is it allows us to migrate our data from 
 
 Read on for more about the architecture of OpaqueKeys. For help understanding how to utilize them in your application, see [[Locators:-Developer-Notes]].
 
-<a name="introspection"/>
 
 ### Key Introspection API
 
@@ -99,7 +92,6 @@ Because not all of our application can be easily refactored to treat keys as tru
 
 The purpose of this API is to allow parts of the application to indirectly introspect database keys, which (a) allows the application to get the information it needs, and (b) ensures that all requests for this information funnel through a very small number of functions. This way, if we need to change the way that the database stores its data, we can do that behind an abstraction layer, and be confident that the rest of the application won't notice. It also means that multiple database key abstractions (`Location`s and `Locators`) can support the same API, so that the rest of the application can treat them as interchangeable, in classic Python duck-typing fashion.  _Thus, key information should only be retrieved using that key's public methods._
 
-<a name="hierarchy"/>
 
 ### OpaqueKey Hierarchy
 
@@ -130,15 +122,12 @@ An `AssetKey` supports static assets such as pictures, pdfs, and mp3s uploaded b
 
 The classes `SlashSeparatedCourseKey` and `Location` both have the `str_type` method and `from_string` classmethod. These methods enable users to serialize and deserialize the CourseKey in the old-style "org/course/run" format and the `Location` in the `i4x://org/course/category/id` format.
 
-<a name="utilizing"/>
-
 ### Utilizing Keys
 
 Eventually, no application or interface should specify the type of key needed, only the abstract class (UsageKey, AssetKey,  CourseKey are good, Location and others are bad).
 
 Requiring a Location is a temporary short cut due to LMS not truly treating keys as opaque. We are migrating to a world of true opaqueness, where only the persistence layer (modulestore) should control the concrete key class. Do not write new code that depends on specific types of keys.
 
-<a name="relationships"/>
 ### Key Relationships
 
 Keys are related in the following way:
@@ -151,7 +140,6 @@ Keys are related in the following way:
 
 A `CourseKey` knows about its `AssetKey`s and `UsageKey`s. An `AssetKey` and a `UsageKey` each knows which `CourseKey` it is associated with. DefKey's are context independent.
 
-<a name="urls"/>
 
 ### URLs
 
