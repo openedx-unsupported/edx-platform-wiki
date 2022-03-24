@@ -19,7 +19,6 @@ When [pull request 4225](https://github.com/edx/edx-platform/pull/4225) is merge
   * [XBlock Usages of Opaque Keys](#xblock)  
   * [Further Reading](#reading)
 
-<a name="quick"/>
 ## The Quick Version
 
 We used to pass around course identifiers as `course_id`s, which were strings.  Then, we passed around course identifiers as `CourseKey`s, which were `OpaqueKey` objects.  Now, we pass around course identifiers as `CourseLocator`s, which are a subclass of `CourseKey`.
@@ -36,7 +35,6 @@ Given the [serialized form](#serialization) of a `course_id`, `location`, `Cours
 
 WEH Before, you would save `course_id` and `location` strings to the database; now you will [save Locators to the database](#database).
 
-<a name="serialization"/>
 ## Serializing
 
 #### In Studio
@@ -47,7 +45,6 @@ To save a Locator of any sort (CourseKey, UsageKey, etc) into a string represent
 
 To serialize `OpaqueKey`s into a string representation, call `foo.to_string()`, where `foo` is some type of `OpaqueKey` object (e.g., either `CourseKey`, `UsageKey`, `CourseLocator`, or `BlockUsageLocator`).
 
-<a name="deserialization"/>
 ## Deserializing
 
 #### In Studio
@@ -88,12 +85,10 @@ If you have no CourseKey (and no `course_id` that you can use to create a Course
 usage_key = Location.from_deprecated_string('i4x://org/course/category/name')
 ````
 
-<a name="introspect"/>
 ## Introspecting Locator Objects
 
 It is possible to get information from these objects. For example, if you are given a `course_locator`, you can use `course_locator.org` to get the organization the course belongs to. The specific pieces of information that can be retrieved from the keys is dependent on the type of key. Check the implementation of the key to see what pieces of information are available; [you can read about the different types of Locators here](https://github.com/edx/edx-platform/wiki/Opaque-Keys).
 
-<a name="database"/>
 ## Saving to the Database
 You may see, in our code, custom Django Fields with the names `CourseKeyField` and `LocationKeyField`.  Retrieving the value of one of these fields will give you a .  The implementation of these fields can be found in `common/djangoapps/xmodule_django/models.py`.
 
@@ -103,7 +98,6 @@ Retrieving the value of one of these fields will give you an opaque key. Trying 
 
 Use `CourseKeyField`s and `LocationKeyField`s instead of `CharField`s to store those data types.
 
-<a name="related"/>
 ## Related Changes
 #### URL reverse calls
 
@@ -142,10 +136,8 @@ course_url = reverse(
 )
 ````
 
-<a name="other_notes"/>
 ## Other Notes
 
-<a name="constructing"/>
 #### Constructing Opaque Keys by Hand
 
 <bold>**In general, this should only be done in tests**.  Avoid explicitly constructing opaque key types in application code.</bold>
@@ -170,7 +162,6 @@ Note that `AssetKey`s only support two `asset_type`s: `'asset'`, which is the as
 
 See the [OpaqueKey hierarchy](https://github.com/edx/edx-platform/wiki/Opaque-Keys#opaquekey-hierarchy) to understand what types of keys are available.
 
-<a name="old_vs_new"/>
 #### Old Way vs New Way
 
 If you encounter legacy code that seems confusing or wrong, see if you can find that pattern in these "old way" examples, and see the "new way" to write that code:
@@ -194,7 +185,6 @@ USAGE KEYS, NEW WAY:
 handouts_locator = course_key.make_usage_key('course_info', 'handouts')
 ````
 
-<a name="xblock"/>
 #### XBlock usages of Opaque Keys
 
 The "children" field of an XBlock should now contain UsageKeys instead of strings.
@@ -203,7 +193,6 @@ The "Reference" type fields (that refer to content defined elsewhere in the cour
 
 `xblock.id` used to return locations.  This has been changed; now, to access an xblock's location, use `xblock.location`.
 
-<a name="reading"/>
 #### Further Reading
 *  [Opaque Keys Overview](https://github.com/edx/edx-platform/wiki/Opaque-Keys-(Locators))
 *  [Split Mongo Architecture](https://github.com/edx/edx-platform/wiki/Split:-the-versioning,-structure-saving-DAO)
