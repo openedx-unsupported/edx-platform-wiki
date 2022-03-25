@@ -3,11 +3,11 @@ This document discusses the design of the Opaque Keys system, as well as the pro
 ### Table of Contents
 1. [TLDR Basics](#basics)
 1. [Background](#background)
-1. [The Problem](#problem)
-1. [The Solution](#solution)
+1. [The Problem](#the-problem)
+1. [The Solution](#the-solution)
   * [Key Introspection API](#introspection)
   * [OpaqueKey Hierarchy](#opaquekey-hierarchy)
-  * [Utilizing Keys](#utilizing)
+  * [Utilizing Keys](#utilizing-keys)
   * [Key Relationships](#relationships)
   * [URLs](#urls)
 
@@ -127,6 +127,7 @@ The classes `SlashSeparatedCourseKey` and `Location` both have the `str_type` me
 Eventually, no application or interface should specify the type of key needed, only the abstract class (UsageKey, AssetKey,  CourseKey are good, Location and others are bad).
 
 Requiring a Location is a temporary short cut due to LMS not truly treating keys as opaque. We are migrating to a world of true opaqueness, where only the persistence layer (modulestore) should control the concrete key class. Do not write new code that depends on specific types of keys.
+
 
 ### Key Relationships
 
