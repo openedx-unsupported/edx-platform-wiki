@@ -1,14 +1,14 @@
 This document discusses the design of the Opaque Keys system, as well as the problem Opaque Keys seeks to solve. For practical understanding of how Opaque Keys impacts edX development, see [[Locators:-Developer-Notes]].
 
 ### Table of Contents
-1. [TLDR Basics](#basics)
+1. [TLDR Basics](#tldr-basics)
 1. [Background](#background)
 1. [The Problem](#the-problem)
 1. [The Solution](#the-solution)
-  * [Key Introspection API](#introspection)
+  * [Key Introspection API](#key-introspection-api)
   * [OpaqueKey Hierarchy](#opaquekey-hierarchy)
   * [Utilizing Keys](#utilizing-keys)
-  * [Key Relationships](#relationships)
+  * [Key Relationships](#key-relationships)
   * [URLs](#urls)
 
 ## TLDR Basics
