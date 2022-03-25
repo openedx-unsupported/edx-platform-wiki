@@ -6,7 +6,7 @@ This document discusses the design of the Opaque Keys system, as well as the pro
 1. [The Problem](#problem)
 1. [The Solution](#solution)
   * [Key Introspection API](#introspection)
-  * [OpaqueKey Hierarchy](#hierarchy)
+  * [OpaqueKey Hierarchy](#opaquekey-hierarchy)
   * [Utilizing Keys](#utilizing)
   * [Key Relationships](#relationships)
   * [URLs](#urls)
